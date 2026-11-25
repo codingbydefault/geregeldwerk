@@ -2,12 +2,14 @@ import type {
   Approval,
   AuditEntry,
   CompanySettings,
+  Customer,
   Expense,
   Invoice,
   LeadEntry,
   PermissionProposal,
   Quote,
   SocialPost,
+  ServiceItem,
   StoreData,
   Task,
 } from "@/lib/domain/types";
@@ -30,6 +32,11 @@ export function createSeedSettings(): CompanySettings {
     defaultVatRate: 0.21,
     footerNote:
       "Fictieve voorbeeldgegevens. Prijzen op een offerte komen van jou, niet van de assistent.",
+    logoUrl: "",
+    quotePrefix: "OFF",
+    invoicePrefix: "FAC",
+    paymentTermDays: 14,
+    termsUrl: "",
   };
 }
 
@@ -39,6 +46,50 @@ export function settingsLookPlaceholder(settings: CompanySettings): boolean {
 
 export function createSeedData(now = new Date("2026-03-16T09:00:00.000Z")): StoreData {
   const settings = createSeedSettings();
+  const customers: Customer[] = [
+    {
+      id: "customer-voorbeeld-vermeer",
+      name: "Familie Vermeer",
+      contactName: "",
+      email: "vermeer@example.test",
+      phone: "0118-000000",
+      address: "Voorbeeldstraat 8",
+      postalCode: "4331 AA",
+      city: "Middelburg",
+      notes: "Fictieve voorbeeldklant.",
+      createdAt: "2026-03-02T09:00:00.000Z",
+      updatedAt: "2026-03-02T09:00:00.000Z",
+      example: true,
+    },
+    {
+      id: "customer-voorbeeld-devries",
+      name: "Pieter de Vries (fictief)",
+      contactName: "Pieter de Vries",
+      email: "pieter.devries@example.test",
+      phone: "06-00000000",
+      address: "Voorbeeldstraat 4",
+      postalCode: "4461 AA",
+      city: "Goes",
+      notes: "Fictieve voorbeeldklant.",
+      createdAt: "2026-03-10T10:00:00.000Z",
+      updatedAt: "2026-03-10T10:00:00.000Z",
+      example: true,
+    },
+  ];
+  const serviceItems: ServiceItem[] = [
+    {
+      id: "service-voorbeeld-uur",
+      name: "Arbeidsuur",
+      description: "Arbeid op locatie",
+      unit: "uur",
+      unitPriceCents: 6500,
+      vatRate: 0.21,
+      active: true,
+      createdAt: "2026-03-01T09:00:00.000Z",
+      updatedAt: "2026-03-01T09:00:00.000Z",
+      example: true,
+    },
+  ];
   const quotes: Quote[] = [
     {
       id: "quote-voorbeeld-concept",
@@ -133,6 +184,11 @@ export function createSeedData(now = new Date("2026-03-16T09:00:00.000Z")): Stor
       vatRate: 0.21,
       createdAt: "2026-03-02T09:15:00.000Z",
       updatedAt: "2026-03-04T16:45:00.000Z",
+      customerId: "customer-voorbeeld-vermeer",
+      expiresAt: "2026-04-03T16:45:00.000Z",
+      acceptanceToken: "voorbeeld-offerte-vermeer",
+      acceptedAt: "2026-03-04T16:45:00.000Z",
+      rejectedAt: null,
     },
   ];
 
@@ -175,10 +231,34 @@ export function createSeedData(now = new Date("2026-03-16T09:00:00.000Z")): Stor
       id: "invoice-voorbeeld",
       number: "FAC-2026-001",
       quoteId: "quote-voorbeeld-geaccepteerd",
+      customerId: "customer-voorbeeld-vermeer",
       customerName: "Familie Vermeer",
+      customerEmail: "vermeer@example.test",
+      customerAddress: "Voorbeeldstraat 8, 4331 AA Middelburg",
+      lines: [
+        {
+          id: "invoice-line-voorbeeld-1",
+          description: "Radiator vervangen",
+          quantity: 2,
+          unit: "stuk",
+          unitPriceCents: 18000,
+          vatRate: 0.21,
+        },
+        {
+          id: "invoice-line-voorbeeld-2",
+          description: "Oude radiator afvoeren",
+          quantity: 2,
+          unit: "stuk",
+          unitPriceCents: 3500,
+          vatRate: 0.21,
+        },
+      ],
       amountCents: 43000,
       vatCents: 9030,
       totalCents: 52030,
+      status: "open",
+      invoiceDate: "2026-03-05",
+      dueDate: "2026-03-19",
       createdAt: "2026-03-05T10:00:00.000Z",
       example: true,
       simulated: true,
@@ -323,6 +403,8 @@ export function createSeedData(now = new Date("2026-03-16T09:00:00.000Z")): Stor
 
   void now;
   return {
+    customers,
+    serviceItems,
     quotes,
     tasks,
     settings,

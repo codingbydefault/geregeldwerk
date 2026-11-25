@@ -10,6 +10,7 @@ import {
   MoreHorizontal,
   Settings,
   ShieldCheck,
+  Users,
   Wallet,
 } from "lucide-react";
 import { useState } from "react";
@@ -17,6 +18,7 @@ import { cn } from "cn";
 
 const LINKS = [
   { href: "/", label: "Bericht", icon: MessageSquarePlus },
+  { href: "/crm", label: "CRM", icon: Users },
   { href: "/offertes", label: "Offertes", icon: FileText },
   { href: "/toezicht", label: "Toezicht", icon: ShieldCheck },
   { href: "/marketing", label: "Marketing", icon: Megaphone },

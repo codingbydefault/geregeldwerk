@@ -7,6 +7,8 @@ export function normalizeStore(input: Partial<StoreData> | null | undefined): St
   const seed = createSeedData();
   if (!input || !Array.isArray(input.quotes) || !input.settings) return seed;
   return {
+    customers: Array.isArray(input.customers) ? input.customers : seed.customers,
+    serviceItems: Array.isArray(input.serviceItems) ? input.serviceItems : seed.serviceItems,
     quotes: input.quotes,
     tasks: Array.isArray(input.tasks) ? input.tasks : [],
     settings: input.settings,

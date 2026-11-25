@@ -18,6 +18,8 @@ const SATURDAY = new Date("2026-03-21T09:00:00.000Z");
 
 function baseStore(): StoreData {
   return {
+    customers: [],
+    serviceItems: [],
     quotes: [],
     tasks: [],
     settings: createSeedSettings(),

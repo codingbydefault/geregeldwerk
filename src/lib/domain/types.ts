@@ -62,6 +62,39 @@ export interface Quote {
   vatRate: number;
   createdAt: string;
   updatedAt: string;
+  customerId?: string | null;
+  expiresAt?: string | null;
+  acceptanceToken?: string | null;
+  acceptedAt?: string | null;
+  rejectedAt?: string | null;
+}
+
+export interface Customer {
+  id: string;
+  name: string;
+  contactName: string;
+  email: string;
+  phone: string;
+  address: string;
+  postalCode: string;
+  city: string;
+  notes: string;
+  createdAt: string;
+  updatedAt: string;
+  example: boolean;
+}
+
+export interface ServiceItem {
+  id: string;
+  name: string;
+  description: string;
+  unit: string;
+  unitPriceCents: number;
+  vatRate: number;
+  active: boolean;
+  createdAt: string;
+  updatedAt: string;
+  example: boolean;
 }
 
 export interface Task {
@@ -89,6 +122,11 @@ export interface CompanySettings {
   quoteValidityDays: number;
   defaultVatRate: number;
   footerNote: string;
+  logoUrl?: string;
+  quotePrefix?: string;
+  invoicePrefix?: string;
+  paymentTermDays?: number;
+  termsUrl?: string;
 }
 
 export const ACTION_TYPES = [
@@ -202,17 +240,41 @@ export interface PermissionProposal {
   example: boolean;
 }
 
+export const INVOICE_STATUSES = ["concept", "definitief", "verzonden", "open", "vervallen", "betaald", "gecrediteerd"] as const;
+export type InvoiceStatus = (typeof INVOICE_STATUSES)[number];
+
+export interface InvoiceLine {
+  id: string;
+  description: string;
+  quantity: number;
+  unit: string;
+  unitPriceCents: number;
+  vatRate: number;
+}
+
 export interface Invoice {
   id: string;
   number: string;
   quoteId: string;
+  customerId?: string | null;
   customerName: string;
+  customerEmail?: string;
+  customerAddress?: string;
+  lines?: InvoiceLine[];
   amountCents: number;
   vatCents: number;
   totalCents: number;
+  status?: InvoiceStatus;
+  invoiceDate?: string;
+  dueDate?: string;
+  finalizedAt?: string | null;
+  sentAt?: string | null;
+  paidAt?: string | null;
+  creditedInvoiceId?: string | null;
+  notes?: string;
   createdAt: string;
   example: boolean;
-  simulated: true;
+  simulated?: boolean;
 }
 
 export interface Expense {
@@ -262,6 +324,8 @@ export interface LeadEntry {
 }
 
 export interface StoreData {
+  customers: Customer[];
+  serviceItems: ServiceItem[];
   quotes: Quote[];
   tasks: Task[];
   settings: CompanySettings;

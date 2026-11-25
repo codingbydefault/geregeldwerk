@@ -154,6 +154,14 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html,
+  body {
+    overflow-x: clip;
+  }
+  ::selection {
+    background: var(--secondary);
+    color: var(--foreground);
+  }
   body {
     @apply bg-background text-foreground;
     background-image:
