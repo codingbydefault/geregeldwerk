@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import type { StoreData } from "@/lib/domain/types";
-import { createSeedData } from "@/lib/storage/seed";
+import { createSeedData, normalizeSettings } from "@/lib/storage/seed";
 
 export function normalizeStore(input: Partial<StoreData> | null | undefined): StoreData {
   const seed = createSeedData();
@@ -11,7 +11,7 @@ export function normalizeStore(input: Partial<StoreData> | null | undefined): St
     serviceItems: Array.isArray(input.serviceItems) ? input.serviceItems : seed.serviceItems,
     quotes: input.quotes,
     tasks: Array.isArray(input.tasks) ? input.tasks : [],
-    settings: input.settings,
+    settings: normalizeSettings(input.settings),
     permissions: input.permissions ?? seed.permissions,
     approvals: Array.isArray(input.approvals) ? input.approvals : [],
     permissionProposals: Array.isArray(input.permissionProposals) ? input.permissionProposals : [],
@@ -21,6 +21,10 @@ export function normalizeStore(input: Partial<StoreData> | null | undefined): St
     appointments: Array.isArray(input.appointments) ? input.appointments : [],
     posts: Array.isArray(input.posts) ? input.posts : [],
     leads: Array.isArray(input.leads) ? input.leads : [],
+    subscription: input.subscription ?? null,
+    billingPurchases: Array.isArray(input.billingPurchases) ? input.billingPurchases : [],
+    processedStripeEvents: Array.isArray(input.processedStripeEvents) ? input.processedStripeEvents : [],
+    waitlist: Array.isArray(input.waitlist) ? input.waitlist : [],
   };
 }
 

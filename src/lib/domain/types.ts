@@ -1,3 +1,6 @@
+import type { BillingPurchase, CompanySubscription } from "@/lib/billing/types";
+import type { StoredWaitlistEntry } from "@/lib/waitlist/schema";
+
 export const QUOTE_STATUSES = ["concept", "verstuurd", "geaccepteerd"] as const;
 
 export type QuoteStatus = (typeof QUOTE_STATUSES)[number];
@@ -11,6 +14,18 @@ export const STATUS_LABEL: Record<QuoteStatus, string> = {
 export const UNITS = ["stuk", "uur", "meter", "m²", "set", "post"] as const;
 
 export type Unit = (typeof UNITS)[number];
+
+export const COUNTRIES = ["NL", "BE"] as const;
+
+export type CountryCode = (typeof COUNTRIES)[number];
+
+export const VAT_SCENARIOS = ["standaard", "verlegd", "intracommunautair"] as const;
+
+export type VatScenario = (typeof VAT_SCENARIOS)[number];
+
+export const PEPPOL_SEND_STATUSES = ["niet_verstuurd", "verstuurd_mock", "mislukt"] as const;
+
+export type PeppolSendStatus = (typeof PEPPOL_SEND_STATUSES)[number];
 
 export interface ExtractedLine {
   description: string;
@@ -60,6 +75,19 @@ export interface Quote {
   lines: QuoteLine[];
   notes: string;
   vatRate: number;
+  /** Land van de koper. Ontbreekt bij oudere offertes en telt dan als NL. */
+  customerCountry?: CountryCode;
+  customerStreet?: string;
+  customerPostalCode?: string;
+  customerCity?: string;
+  customerVat?: string;
+  /** Leeg: afgeleid uit KvK, ondernemingsnummer of btw-nummer. */
+  customerEndpointScheme?: string;
+  customerEndpointId?: string;
+  /** KvK (NL) of ondernemingsnummer (BE) van de koper. */
+  customerLegalId?: string;
+  buyerReference?: string;
+  vatScenario?: VatScenario;
   createdAt: string;
   updatedAt: string;
   customerId?: string | null;
@@ -125,8 +153,13 @@ export interface CompanySettings {
   logoUrl?: string;
   quotePrefix?: string;
   invoicePrefix?: string;
-  paymentTermDays?: number;
   termsUrl?: string;
+  /** Land van het eigen bedrijf. Ontbreekt bij oudere gegevens en telt dan als NL. */
+  country?: CountryCode;
+  /** Belgisch ondernemingsnummer, alleen nodig als country BE is. */
+  enterpriseNumber?: string;
+  /** Betaaltermijn van een factuur, in dagen. */
+  paymentTermDays?: number;
 }
 
 export const ACTION_TYPES = [
@@ -244,12 +277,13 @@ export const INVOICE_STATUSES = ["concept", "definitief", "verzonden", "open", "
 export type InvoiceStatus = (typeof INVOICE_STATUSES)[number];
 
 export interface InvoiceLine {
-  id: string;
+  id?: string;
   description: string;
   quantity: number;
   unit: string;
   unitPriceCents: number;
-  vatRate: number;
+  vatRate?: number;
+  lineCents?: number;
 }
 
 export interface Invoice {
@@ -275,6 +309,22 @@ export interface Invoice {
   createdAt: string;
   example: boolean;
   simulated?: boolean;
+  issueDate?: string;
+  vatScenario?: VatScenario;
+  vatRate?: number;
+  sellerCountry?: CountryCode;
+  buyerCountry?: CountryCode;
+  sellerName?: string;
+  buyerReference?: string;
+  sellerEndpointScheme?: string;
+  sellerEndpointId?: string;
+  buyerEndpointScheme?: string;
+  buyerEndpointId?: string;
+  ublXml?: string;
+  sendStatus?: PeppolSendStatus;
+  sendProvider?: string | null;
+  transmissionId?: string | null;
+  sendMessage?: string | null;
 }
 
 export interface Expense {
@@ -338,6 +388,11 @@ export interface StoreData {
   appointments: Appointment[];
   posts: SocialPost[];
   leads: LeadEntry[];
+  /** Eén bedrijf in deze opslag. Meerdere tenants komen later. Ontbreekt in oudere bestanden. */
+  subscription?: CompanySubscription | null;
+  billingPurchases?: BillingPurchase[];
+  processedStripeEvents?: string[];
+  waitlist?: StoredWaitlistEntry[];
 }
 
 export interface Totals {

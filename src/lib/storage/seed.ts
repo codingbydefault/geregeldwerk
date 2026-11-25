@@ -30,13 +30,29 @@ export function createSeedSettings(): CompanySettings {
     phone: "0114-000000",
     quoteValidityDays: 30,
     defaultVatRate: 0.21,
+    country: "NL",
+    enterpriseNumber: "",
+    paymentTermDays: 14,
     footerNote:
       "Fictieve voorbeeldgegevens. Prijzen op een offerte komen van jou, niet van de assistent.",
     logoUrl: "",
     quotePrefix: "OFF",
     invoicePrefix: "FAC",
-    paymentTermDays: 14,
     termsUrl: "",
+  };
+}
+
+export function normalizeSettings(input: Partial<CompanySettings> | undefined): CompanySettings {
+  const seed = createSeedSettings();
+  return {
+    ...seed,
+    ...input,
+    country: input?.country === "BE" ? "BE" : "NL",
+    enterpriseNumber: typeof input?.enterpriseNumber === "string" ? input.enterpriseNumber : "",
+    paymentTermDays:
+      typeof input?.paymentTermDays === "number" && Number.isInteger(input.paymentTermDays)
+        ? input.paymentTermDays
+        : seed.paymentTermDays,
   };
 }
 
@@ -309,7 +325,7 @@ export function createSeedData(now = new Date("2026-03-16T09:00:00.000Z")): Stor
       id: "approval-voorbeeld-bon",
       status: "wacht_op_goedkeuring",
       actionType: "bon_boeken",
-      actor: { kind: "ai", label: "Geregeldwerk-assistent (mock)" },
+      actor: { kind: "ai", label: "GeregeldWerk-assistent (mock)" },
       summary: "Bon boeken: fictieve boormachine",
       reason: "Bedrag € 120,00 ligt boven het maximum van € 75,00.",
       payload: { type: "bon_boeken", description: "Fictieve boormachine", amountCents: 12000 },
@@ -326,7 +342,7 @@ export function createSeedData(now = new Date("2026-03-16T09:00:00.000Z")): Stor
       id: "approval-voorbeeld-post",
       status: "wacht_op_goedkeuring",
       actionType: "social_publiceren",
-      actor: { kind: "ai", label: "Geregeldwerk-assistent (mock)" },
+      actor: { kind: "ai", label: "GeregeldWerk-assistent (mock)" },
       summary: "Social post publiceren (facebook)",
       reason: "Deze actie staat op altijd vragen.",
       payload: { type: "social_publiceren", postId: "post-voorbeeld-ingepland" },
@@ -360,7 +376,7 @@ export function createSeedData(now = new Date("2026-03-16T09:00:00.000Z")): Stor
     {
       id: "audit-voorbeeld-bon",
       at: "2026-03-18T09:10:00.000Z",
-      actor: { kind: "ai", label: "Geregeldwerk-assistent (mock)" },
+      actor: { kind: "ai", label: "GeregeldWerk-assistent (mock)" },
       action: "bon_boeken",
       outcome: "uitgevoerd",
       summary: "Bon boeken: fictieve pakkingset",
@@ -374,7 +390,7 @@ export function createSeedData(now = new Date("2026-03-16T09:00:00.000Z")): Stor
     {
       id: "audit-voorbeeld-wachtrij",
       at: "2026-03-18T09:30:00.000Z",
-      actor: { kind: "ai", label: "Geregeldwerk-assistent (mock)" },
+      actor: { kind: "ai", label: "GeregeldWerk-assistent (mock)" },
       action: "bon_boeken",
       outcome: "wachtrij",
       summary: "Bon boeken: fictieve boormachine",
@@ -388,7 +404,7 @@ export function createSeedData(now = new Date("2026-03-16T09:00:00.000Z")): Stor
     {
       id: "audit-voorbeeld-fout",
       at: "2026-03-12T08:20:00.000Z",
-      actor: { kind: "ai", label: "Geregeldwerk-assistent (mock)" },
+      actor: { kind: "ai", label: "GeregeldWerk-assistent (mock)" },
       action: "factuur_maken",
       outcome: "fout",
       summary: "Factuur maken voor OFF-2026-001",
@@ -417,5 +433,9 @@ export function createSeedData(now = new Date("2026-03-16T09:00:00.000Z")): Stor
     appointments: [],
     posts,
     leads,
+    subscription: null,
+    billingPurchases: [],
+    processedStripeEvents: [],
+    waitlist: [],
   };
 }
