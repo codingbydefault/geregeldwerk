@@ -1,13 +1,13 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { migrateCustomers, migrationPending } from "@/lib/domain/customers";
 import type { StoreData } from "@/lib/domain/types";
 import { createSeedData, normalizeSettings } from "@/lib/storage/seed";
 
 export function normalizeStore(input: Partial<StoreData> | null | undefined): StoreData {
   const seed = createSeedData();
   if (!input || !Array.isArray(input.quotes) || !input.settings) return seed;
-  return {
-    customers: Array.isArray(input.customers) ? input.customers : seed.customers,
+  return migrateCustomers({
     serviceItems: Array.isArray(input.serviceItems) ? input.serviceItems : seed.serviceItems,
     quotes: input.quotes,
     tasks: Array.isArray(input.tasks) ? input.tasks : [],
@@ -25,7 +25,13 @@ export function normalizeStore(input: Partial<StoreData> | null | undefined): St
     billingPurchases: Array.isArray(input.billingPurchases) ? input.billingPurchases : [],
     processedStripeEvents: Array.isArray(input.processedStripeEvents) ? input.processedStripeEvents : [],
     waitlist: Array.isArray(input.waitlist) ? input.waitlist : [],
-  };
+    customers: Array.isArray(input.customers) ? input.customers : [],
+    customerNotes: Array.isArray(input.customerNotes) ? input.customerNotes : [],
+    customerMigration:
+      input.customerMigration && Array.isArray(input.customerMigration.convertedLeadIds)
+        ? input.customerMigration
+        : { convertedLeadIds: [] },
+  });
 }
 
 export interface Repository {
@@ -39,7 +45,13 @@ export function createFileRepository(filePath: string): Repository {
   async function ensure(): Promise<StoreData> {
     try {
       const raw = await readFile(filePath, "utf8");
-      return parseStore(raw);
+      const parsed = JSON.parse(raw) as Partial<StoreData>;
+      const store = parseStore(raw);
+      if (migrationPending(parsed)) {
+        await mkdir(path.dirname(filePath), { recursive: true });
+        await writeFile(filePath, JSON.stringify(store, null, 2));
+      }
+      return store;
     } catch (error) {
       const code = (error as NodeJS.ErrnoException).code;
       if (code !== "ENOENT") throw error;

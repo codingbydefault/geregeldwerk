@@ -251,6 +251,8 @@ describe("UBL Peppol BIS Billing 3.0", () => {
       appointments: [],
       posts: [],
       leads: [],
+      customerNotes: [],
+      customerMigration: { convertedLeadIds: [] },
     };
     store.permissions.rules = store.permissions.rules.map((rule) =>
       rule.actionType === "factuur_maken"
