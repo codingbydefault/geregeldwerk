@@ -105,12 +105,12 @@ export function PricingSection({ catalog, mode = "waitlist" }: { catalog: Billin
         ))}
       </ul>
 
-      <div className="overflow-x-auto rounded-3xl border border-border bg-card">
+      <div className="overflow-x-auto rounded-3xl border border-border bg-card" tabIndex={0} aria-label="Prijsvergelijking; horizontaal scrollbaar">
         <table className="w-full min-w-[44rem] text-left text-sm">
           <caption className="px-4 py-4 text-left font-heading text-xl">Vergelijk de limieten</caption>
           <thead className="text-muted-foreground">
             <tr>
-              <th scope="col" className="px-4 py-3 font-medium">Limiet</th>
+              <th scope="col" className="price-table-key px-4 py-3 font-medium">Limiet</th>
               {catalog.plans.map((plan) => (
                 <th key={plan.id} scope="col" className="px-4 py-3 font-medium">
                   {plan.name}
@@ -121,7 +121,7 @@ export function PricingSection({ catalog, mode = "waitlist" }: { catalog: Billin
           <tbody>
             {catalog.plans[0].limits.map((row) => (
               <tr key={row.key} className="border-t border-border">
-                <th scope="row" className="bg-transparent px-4 py-3 font-medium">{row.label}</th>
+                <th scope="row" className="price-table-key px-4 py-3 font-medium">{row.label}</th>
                 {catalog.plans.map((plan) => {
                   const cell = plan.limits.find((item) => item.key === row.key);
                   return (
@@ -149,14 +149,14 @@ export function PricingSection({ catalog, mode = "waitlist" }: { catalog: Billin
               {addon.stripeLookupKey && !waitlist ? (
                 <button
                   type="button"
-                  className="mt-3 inline-flex h-9 items-center rounded-lg border border-border px-3 text-sm font-semibold hover:border-primary/40 disabled:opacity-60"
+                  className="mt-3 inline-flex h-11 items-center rounded-lg border border-border px-3 text-sm font-semibold hover:border-primary/40 disabled:opacity-60"
                   disabled={busy === addon.id}
                   onClick={() => void checkout({ kind: "addon", addonId: addon.id }, addon.id)}
                 >
                   {busy === addon.id ? "Even naar de kassa…" : "Afrekenen"}
                 </button>
               ) : addon.stripeLookupKey ? (
-                <a href="#wachtlijst" className="mt-3 inline-flex h-9 items-center rounded-lg border border-border px-3 text-sm font-semibold hover:border-primary/40">
+                <a href="#wachtlijst" className="mt-3 inline-flex h-11 items-center rounded-lg border border-border px-3 text-sm font-semibold hover:border-primary/40">
                   Zet me op de wachtlijst
                 </a>
               ) : (
@@ -187,8 +187,8 @@ function PeriodButton({
       onClick={onClick}
       className={
         pressed
-          ? "inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
-          : "inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-muted-foreground"
+          ? "inline-flex h-11 items-center gap-2 rounded-full bg-primary px-4 text-sm font-semibold text-primary-foreground"
+          : "inline-flex h-11 items-center gap-2 rounded-full px-4 text-sm font-semibold text-muted-foreground"
       }
     >
       {children}

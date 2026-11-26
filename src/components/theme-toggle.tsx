@@ -11,7 +11,7 @@ export function ThemeToggle() {
   }
 
   return (
-    <Button type="button" variant="outline" size="icon" aria-label="Wissel tussen licht en donker" onClick={toggle}>
+    <Button type="button" variant="outline" size="icon" className="size-11" aria-label="Wissel tussen licht en donker" onClick={toggle}>
       <Sun className="hidden dark:block" />
       <Moon className="dark:hidden" />
     </Button>

@@ -9,6 +9,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { TrustBadges } from "@/components/trust-badges";
 import { billingCatalog } from "@/lib/billing/seed";
 import { launchMode } from "@/lib/launch";
+import { footerGroups } from "@/lib/footer-links";
 import { SectionNav } from "@/components/section-nav";
 import { WaitlistForm } from "@/components/waitlist-form";
 
@@ -72,7 +73,7 @@ export default function LandingPage() {
             </Link>
             {waitlist ? (
               <a href="#wachtlijst" className="inline-flex h-11 shrink-0 items-center rounded-lg bg-primary px-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 sm:px-3">
-                Zet me op de wachtlijst
+                <span className="sm:hidden">Wachtlijst</span><span className="hidden sm:inline">Zet me op de wachtlijst</span>
               </a>
             ) : (
               <Link href="/app" className="inline-flex h-11 shrink-0 items-center rounded-lg bg-primary px-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 sm:px-3">
@@ -251,21 +252,30 @@ export default function LandingPage() {
         </section>
       </main>
 
-      <footer className="mt-auto border-t border-border">
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 py-8 text-sm text-muted-foreground sm:flex-row sm:items-end sm:justify-between">
+      <footer className="mt-auto border-t border-border bg-card/40">
+        <div className="mx-auto grid w-full max-w-6xl gap-10 px-4 py-12 text-sm sm:grid-cols-2 lg:grid-cols-[1.35fr_1fr_1fr_1.2fr]">
           <div>
-            <p className="wordmark text-sm text-foreground">
-              Geregeld<span className="text-primary">Werk</span>
-            </p>
-            <p className="mt-2">Jij doet het werk, wij doen de rest</p>
-            <p className="mt-2">GeregeldWerk is een product van CodedByDefault.</p>
+            <BrandLockup />
+            <p className="mt-4 max-w-xs leading-6 text-muted-foreground">Jij doet het werk, wij regelen je offertes en facturen.</p>
+            <p className="mt-5 leading-6 text-muted-foreground">Een product van De Bumperbank, handelend onder de naam <a className="font-semibold text-foreground underline decoration-border underline-offset-4 hover:text-primary" href="https://www.codedbydefault.com/" target="_blank" rel="noreferrer">CodedByDefault</a><br />KvK 42171617 · BTW NL005557496B77</p>
           </div>
-          <nav aria-label="Footer" className="flex flex-wrap gap-4">
-            <a href="#prijzen">Prijzen</a>
-            <a href="#contact">Contact</a>
-            <Link href="/app">Naar de app</Link>
-          </nav>
+          {footerGroups.map((group) => (
+            <nav key={group.title} aria-label={group.title}>
+              <h2 className="font-heading text-base text-foreground">{group.title}</h2>
+              <ul className="mt-4 space-y-3 text-muted-foreground">
+                {group.links.map((link) => (
+                  <li key={link.href}>
+                    <Link className="group inline-flex min-h-11 items-center gap-3 hover:text-foreground" href={link.href} target={link.href.startsWith("http") ? "_blank" : undefined} rel={link.href.startsWith("http") ? "noreferrer" : undefined}>
+                      {link.icon ? <Image src={link.icon} alt="" width={24} height={24} className="size-6 rounded bg-white object-contain p-0.5" /> : null}
+                      <span><span className="block font-medium text-foreground group-hover:text-primary">{link.label}</span>{link.description ? <span className="block text-xs">{link.description}</span> : null}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))}
         </div>
+        <div className="border-t border-border"><p className="mx-auto max-w-6xl px-4 py-5 text-xs leading-5 text-muted-foreground">Peppol is een internationale e-facturatiestandaard; de huidige integratie is in ontwikkeling. Ollama kan optioneel lokale AI-modellen ondersteunen. Vermelding betekent geen formeel partnerschap.</p></div>
       </footer>
     </div>
   );
@@ -273,9 +283,9 @@ export default function LandingPage() {
 
 function Faq({ question, children }: { question: string; children: React.ReactNode }) {
   return (
-    <details className="rounded-2xl border border-border bg-card px-4 py-1">
+    <details className="overflow-hidden rounded-2xl border border-border bg-card px-4 py-1">
       <summary className="flex min-h-11 cursor-pointer items-center font-medium">{question}</summary>
-      <p className="mt-2 text-sm leading-6 text-muted-foreground">{children}</p>
+      <p className="mt-2 pb-3 text-sm leading-6 text-muted-foreground">{children}</p>
     </details>
   );
 }
