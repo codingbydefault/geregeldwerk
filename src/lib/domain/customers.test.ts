@@ -211,6 +211,47 @@ describe("pijplijn", () => {
     applyQuoteTransition(store, otherRejected, "verstuurd", NOW);
     expect(store.customers[0]?.pipelineStatus).toBe("gewonnen");
   });
+
+  it("herberekent de pijplijn wanneer een besliste offerte teruggaat naar concept", () => {
+    const store = emptyStore();
+    store.settings.lostLeadRetentionDays = 30;
+    const customer: Customer = {
+      id: "customer-reset",
+      name: "Resetklant",
+      type: "particulier",
+      phone: "",
+      email: "reset@example.test",
+      address: "Utrecht",
+      country: "NL",
+      vatOrEnterpriseNumber: "",
+      source: "Bericht",
+      pipelineStatus: "verloren",
+      lossReason: "",
+      tags: [],
+      retainUntil: "2026-04-17",
+      example: true,
+      sourceLeadId: null,
+      createdAt: NOW.toISOString(),
+      updatedAt: NOW.toISOString(),
+    };
+    const rejected = quote({ id: "q-reset", customerName: customer.name, status: "afgewezen", customerId: customer.id });
+    store.customers.push(customer);
+    store.quotes.push(rejected);
+
+    const concept = { ...rejected, status: "concept" as const };
+    store.quotes[0] = concept;
+    applyQuoteTransition(store, concept, "afgewezen", NOW);
+    expect(customer.pipelineStatus).toBe("lead");
+    expect(customer.retainUntil).toBeNull();
+
+    const accepted = { ...concept, status: "geaccepteerd" as const };
+    store.quotes[0] = accepted;
+    applyQuoteTransition(store, accepted, "concept", NOW);
+    const conceptAgain = { ...accepted, status: "concept" as const };
+    store.quotes[0] = conceptAgain;
+    applyQuoteTransition(store, conceptAgain, "geaccepteerd", NOW);
+    expect(customer.pipelineStatus).toBe("lead");
+  });
 });
 
 describe("verwijderen en exporteren", () => {

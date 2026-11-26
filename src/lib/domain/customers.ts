@@ -388,27 +388,21 @@ export function applyQuoteTransition(store: StoreData, quote: Quote, previousSta
   const customer = store.customers.find((item) => item.id === quote.customerId);
   if (!customer) return;
 
-  if (quote.status === "geaccepteerd") {
+  const statuses = store.quotes
+    .filter((item) => item.customerId === customer.id)
+    .map((item) => item.status);
+  if (statuses.includes("geaccepteerd")) {
     customer.pipelineStatus = "gewonnen";
     customer.retainUntil = null;
-  } else if (quote.status === "verstuurd") {
-    if (customer.pipelineStatus !== "gewonnen") {
-      customer.pipelineStatus = "offerte_verstuurd";
-      customer.retainUntil = null;
-    }
-  } else if (quote.status === "afgewezen") {
-    const others = store.quotes.filter((item) => item.customerId === customer.id && item.id !== quote.id);
-    if (others.some((item) => item.status === "geaccepteerd")) {
-      customer.pipelineStatus = "gewonnen";
-    } else if (others.some((item) => item.status === "verstuurd")) {
-      customer.pipelineStatus = "offerte_verstuurd";
-      customer.retainUntil = null;
-    } else {
-      customer.pipelineStatus = "verloren";
-      customer.retainUntil = customer.retainUntil ?? retainUntilFromSettings(store.settings, now);
-    }
+  } else if (statuses.includes("verstuurd")) {
+    customer.pipelineStatus = "offerte_verstuurd";
+    customer.retainUntil = null;
+  } else if (statuses.includes("afgewezen")) {
+    customer.pipelineStatus = "verloren";
+    customer.retainUntil = customer.retainUntil ?? retainUntilFromSettings(store.settings, now);
   } else {
-    return;
+    customer.pipelineStatus = "lead";
+    customer.retainUntil = null;
   }
   customer.updatedAt = now.toISOString();
 }
