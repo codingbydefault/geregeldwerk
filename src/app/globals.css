@@ -1,3 +1,4 @@
+/* Hallmark · checked: 2026-11-26 · genre: modern-minimal (inferred) · theme: Dose (dealt 1/3) · scope: site · built: the project · redesign: polish · v2.0.0 */
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -53,6 +54,30 @@
 
 :root {
   color-scheme: light;
+  --palette-night: #07120d;
+  --palette-paper: #edf4ef;
+  --palette-card-dark: #152b21;
+  --palette-popover-dark: #1b3428;
+  --palette-primary-dark: #58da98;
+  --palette-secondary-dark: #1c382c;
+  --palette-muted-dark: #1a3328;
+  --palette-muted-foreground-dark: #a9c4b6;
+  --palette-accent-dark: #20392c;
+  --palette-destructive-dark: #ffb4a8;
+  --palette-border-dark: #2f4f40;
+  --palette-input-dark: #4e7a66;
+  --palette-warning-dark: #e6c15a;
+  --palette-warning-bg-dark: #2a2414;
+  --palette-sidebar-dark: #102118;
+  --palette-blue: #3147e6;
+  --palette-blue-foreground: #f4f6ff;
+  --palette-blue-dark: #7c93ff;
+  --palette-blue-dark-foreground: #10131f;
+  --palette-orange: #c2410c;
+  --palette-orange-foreground: #fff7f3;
+  --palette-orange-dark: #ff6a1a;
+  --palette-orange-dark-foreground: #1a0c05;
+  --palette-print: #ffffff;
   --background: #f3f7f4;
   --foreground: #07120d;
   --card: #ffffff;
@@ -92,62 +117,62 @@
 
 .dark {
   color-scheme: dark;
-  --background: #07120d;
-  --foreground: #edf4ef;
-  --card: #152b21;
-  --card-foreground: #edf4ef;
-  --popover: #1b3428;
-  --popover-foreground: #edf4ef;
-  --primary: #58da98;
-  --primary-foreground: #07120d;
-  --secondary: #1c382c;
-  --secondary-foreground: #edf4ef;
-  --muted: #1a3328;
-  --muted-foreground: #a9c4b6;
-  --accent: #20392c;
-  --accent-foreground: #edf4ef;
-  --destructive: #ffb4a8;
-  --border: #2f4f40;
-  --input: #4e7a66;
-  --ring: #58da98;
-  --warning: #e6c15a;
-  --warning-foreground: #edf4ef;
-  --warning-bg: #2a2414;
-  --chart-1: #58da98;
-  --chart-2: #127a49;
-  --chart-3: #a9c4b6;
-  --chart-4: #e6c15a;
-  --chart-5: #20392c;
-  --sidebar: #102118;
-  --sidebar-foreground: #edf4ef;
-  --sidebar-primary: #58da98;
-  --sidebar-primary-foreground: #07120d;
-  --sidebar-accent: #20392c;
-  --sidebar-accent-foreground: #edf4ef;
-  --sidebar-border: #2f4f40;
-  --sidebar-ring: #58da98;
+  --background: var(--palette-night);
+  --foreground: var(--palette-paper);
+  --card: var(--palette-card-dark);
+  --card-foreground: var(--palette-paper);
+  --popover: var(--palette-popover-dark);
+  --popover-foreground: var(--palette-paper);
+  --primary: var(--palette-primary-dark);
+  --primary-foreground: var(--palette-night);
+  --secondary: var(--palette-secondary-dark);
+  --secondary-foreground: var(--palette-paper);
+  --muted: var(--palette-muted-dark);
+  --muted-foreground: var(--palette-muted-foreground-dark);
+  --accent: var(--palette-accent-dark);
+  --accent-foreground: var(--palette-paper);
+  --destructive: var(--palette-destructive-dark);
+  --border: var(--palette-border-dark);
+  --input: var(--palette-input-dark);
+  --ring: var(--palette-primary-dark);
+  --warning: var(--palette-warning-dark);
+  --warning-foreground: var(--palette-paper);
+  --warning-bg: var(--palette-warning-bg-dark);
+  --chart-1: var(--palette-primary-dark);
+  --chart-2: var(--primary);
+  --chart-3: var(--palette-muted-foreground-dark);
+  --chart-4: var(--palette-warning-dark);
+  --chart-5: var(--palette-accent-dark);
+  --sidebar: var(--palette-sidebar-dark);
+  --sidebar-foreground: var(--palette-paper);
+  --sidebar-primary: var(--palette-primary-dark);
+  --sidebar-primary-foreground: var(--palette-night);
+  --sidebar-accent: var(--palette-accent-dark);
+  --sidebar-accent-foreground: var(--palette-paper);
+  --sidebar-border: var(--palette-border-dark);
+  --sidebar-ring: var(--palette-primary-dark);
 }
 
 /* Accent previews. Default stays green. Set ACCENT_THEME=blue or orange. */
 .accent-blue {
-  --primary: #3147e6;
-  --primary-foreground: #f4f6ff;
-  --ring: #3147e6;
+  --primary: var(--palette-blue);
+  --primary-foreground: var(--palette-blue-foreground);
+  --ring: var(--palette-blue);
 }
 .dark.accent-blue {
-  --primary: #7c93ff;
-  --primary-foreground: #10131f;
-  --ring: #7c93ff;
+  --primary: var(--palette-blue-dark);
+  --primary-foreground: var(--palette-blue-dark-foreground);
+  --ring: var(--palette-blue-dark);
 }
 .accent-orange {
-  --primary: #c2410c;
-  --primary-foreground: #fff7f3;
-  --ring: #c2410c;
+  --primary: var(--palette-orange);
+  --primary-foreground: var(--palette-orange-foreground);
+  --ring: var(--palette-orange);
 }
 .dark.accent-orange {
-  --primary: #ff6a1a;
-  --primary-foreground: #1a0c05;
-  --ring: #ff6a1a;
+  --primary: var(--palette-orange-dark);
+  --primary-foreground: var(--palette-orange-dark-foreground);
+  --ring: var(--palette-orange-dark);
 }
 
 @layer base {
@@ -166,7 +191,7 @@
     @apply bg-background text-foreground;
     background-image:
       radial-gradient(ellipse at 8% -10%, color-mix(in srgb, var(--primary) 14%, transparent), transparent 36rem),
-      radial-gradient(ellipse at 100% 0%, color-mix(in srgb, #58da98 12%, transparent), transparent 28rem);
+      radial-gradient(ellipse at 100% 0%, color-mix(in srgb, var(--palette-primary-dark) 12%, transparent), transparent 28rem);
   }
   html {
     @apply font-sans;
@@ -176,6 +201,7 @@
   .font-heading {
     font-family: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
     letter-spacing: -0.03em;
+    text-wrap: balance;
   }
   h1 {
     font-weight: 600;
@@ -195,6 +221,13 @@
   summary:focus-visible {
     outline: 2px solid var(--ring);
     outline-offset: 2px;
+  }
+  a:active,
+  button:active {
+    transform: translateY(1px);
+  }
+  html {
+    scrollbar-color: var(--primary) var(--background);
   }
   input[aria-invalid="true"],
   select[aria-invalid="true"],
@@ -248,8 +281,8 @@
 
 .dark body {
   background-image:
-    radial-gradient(ellipse at 8% -10%, color-mix(in srgb, #58da98 16%, transparent), transparent 34rem),
-    radial-gradient(ellipse at 100% 0%, color-mix(in srgb, #58da98 8%, transparent), transparent 26rem);
+    radial-gradient(ellipse at 8% -10%, color-mix(in srgb, var(--palette-primary-dark) 16%, transparent), transparent 34rem),
+    radial-gradient(ellipse at 100% 0%, color-mix(in srgb, var(--palette-primary-dark) 8%, transparent), transparent 26rem);
 }
 
 @keyframes rise-in {
@@ -280,7 +313,7 @@
 
 @media print {
   body {
-    background: white !important;
+    background: var(--palette-print) !important;
   }
   .no-print {
     display: none !important;

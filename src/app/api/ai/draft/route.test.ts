@@ -22,7 +22,7 @@ describe("POST /api/ai/draft", () => {
     await expect(response.json()).resolves.toMatchObject({ error: expect.stringMatching(/werkzaamheden/i) });
   });
 
-  it("returns 503 when the configured local Ollama service is unavailable", async () => {
+  it("returns a safe template when the configured local Ollama service is unavailable", async () => {
     process.env.OLLAMA_BASE_URL = "http://127.0.0.1:1";
     const request = new Request("http://localhost/api/ai/draft", {
       method: "POST",
@@ -32,7 +32,11 @@ describe("POST /api/ai/draft", () => {
 
     const response = await POST(request);
 
-    expect(response.status).toBe(503);
-    await expect(response.json()).resolves.toMatchObject({ error: expect.stringMatching(/lokale AI/i) });
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toMatchObject({
+      model: "template-v1",
+      fallback: true,
+      text: expect.stringMatching(/Vier ramen wassen/),
+    });
   });
 });

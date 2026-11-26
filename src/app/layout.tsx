@@ -27,6 +27,7 @@ function accentClassName() {
 }
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://geregeldwerk.nl"),
   title: {
     default: "GeregeldWerk",
     template: "%s · GeregeldWerk",

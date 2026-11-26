@@ -104,7 +104,7 @@ export default function LandingPage() {
                 <span className="wordmark block text-sm text-primary sm:text-base">GeregeldWerk</span>
                 <span className="mt-3 block">Van aanvraag naar offerte. Slim geregeld.</span>
               </h1>
-              <p className="mt-5 text-sm font-semibold tracking-[0.16em] text-primary uppercase">
+              <p className="mt-5 text-sm font-semibold text-primary">
                 Jij doet het werk, wij doen de rest
               </p>
               <p className="mt-5 max-w-xl text-base leading-7 text-muted-foreground">
@@ -158,7 +158,7 @@ export default function LandingPage() {
                 <span className="min-w-0">
                   <span className="block">{reason.text}</span>
                   {waitlist && reason.soon ? (
-                    <span className="mt-1 inline-block text-xs font-semibold tracking-wide text-primary uppercase">Bij lancering</span>
+                    <span className="mt-1 inline-block text-xs font-semibold text-primary">Bij lancering</span>
                   ) : null}
                 </span>
               </li>
@@ -195,7 +195,7 @@ export default function LandingPage() {
                   className="aspect-square w-full object-cover"
                 />
                 <div className="p-5">
-                  <p className="text-sm font-semibold tracking-[0.16em] text-primary uppercase">Stap {index + 1}</p>
+                  <p className="text-sm font-semibold text-primary">Stap {index + 1}</p>
                   <h3 className="mt-3 font-heading text-2xl">{step.title}</h3>
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">{step.text}</p>
                 </div>

@@ -27,6 +27,12 @@ describe("Ollama browser client", () => {
       .resolves.toEqual({ text: "Conceptofferte", model: "qwen3:0.6b" });
   });
 
+  it("marks a deterministic template fallback", async () => {
+    const url = await endpoint(200, { text: "Veilig concept", model: "template-v1", fallback: true });
+    await expect(requestLocalDraft({ customer: "Jansen", service: "Ramen wassen" }, url))
+      .resolves.toEqual({ text: "Veilig concept", model: "template-v1", fallback: true });
+  });
+
   it("surfaces the API error message", async () => {
     const url = await endpoint(503, { error: "De lokale AI is niet bereikbaar." });
     await expect(requestLocalDraft({ customer: "Jansen", service: "Ramen wassen" }, url))

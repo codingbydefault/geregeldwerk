@@ -43,6 +43,25 @@ export function buildOllamaPrompt(input: DraftInput): string {
   ].filter(Boolean).join("\n");
 }
 
+export function generateFallbackDraft(input: DraftInput) {
+  const value = validateDraftInput(input);
+  const salutation = value.customer ? `Beste ${value.customer},` : "Beste klant,";
+  const location = value.location ? ` in ${value.location}` : "";
+  return {
+    text: [
+      salutation,
+      "",
+      `Graag bieden wij je een conceptofferte aan voor de volgende werkzaamheden: ${value.service}${location}.`,
+      "",
+      "Prijs: [bedrag invullen]",
+      "",
+      "Met vriendelijke groet,",
+    ].join("\n"),
+    model: "template-v1",
+    fallback: true,
+  };
+}
+
 export async function generateLocalDraft(input: DraftInput, options: OllamaOptions = {}) {
   const model = options.model || process.env.OLLAMA_MODEL || "qwen3:0.6b";
   const baseUrl = (options.baseUrl || process.env.OLLAMA_BASE_URL || "http://127.0.0.1:11434").replace(/\/$/, "");

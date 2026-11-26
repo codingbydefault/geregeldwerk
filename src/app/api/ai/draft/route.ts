@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { generateLocalDraft, validateDraftInput, type DraftInput } from "@/lib/ollama";
+import { generateFallbackDraft, generateLocalDraft, validateDraftInput, type DraftInput } from "@/lib/ollama";
 
 export async function POST(request: Request) {
   let input: DraftInput;
@@ -15,9 +15,6 @@ export async function POST(request: Request) {
   try {
     return NextResponse.json(await generateLocalDraft(input));
   } catch {
-    return NextResponse.json(
-      { error: "De lokale AI is niet bereikbaar. Controleer of Ollama draait." },
-      { status: 503 },
-    );
+    return NextResponse.json(generateFallbackDraft(input));
   }
 }
