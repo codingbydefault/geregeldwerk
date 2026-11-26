@@ -257,7 +257,7 @@ export default function LandingPage() {
           <div>
             <BrandLockup />
             <p className="mt-4 max-w-xs leading-6 text-muted-foreground">Jij doet het werk, wij regelen je offertes en facturen.</p>
-            <p className="mt-5 leading-6 text-muted-foreground">Een product van De Bumperbank, handelend onder de naam <a className="font-semibold text-foreground underline decoration-border underline-offset-4 hover:text-primary" href="https://www.codedbydefault.com/" target="_blank" rel="noreferrer">CodedByDefault</a><br />KvK 42171617 · BTW NL005557496B77</p>
+            <p className="mt-5 leading-6 text-muted-foreground">Een product van <a className="font-semibold text-foreground underline decoration-border underline-offset-4 hover:text-primary" href="https://www.codedbydefault.com/" target="_blank" rel="noreferrer">CodedByDefault</a><br />KvK 42171617 · BTW NL005557496B77</p>
           </div>
           {footerGroups.map((group) => (
             <nav key={group.title} aria-label={group.title}>
